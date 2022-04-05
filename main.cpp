@@ -79,7 +79,7 @@ void processMenu(HWND hWnd, WPARAM wParam)
             }
             break;
         case IDM_FILE_LOAD_RAW:
-            current_file = openfilename("Image (*.raw)\0*.raw\0\0", hWnd);
+            current_file = openfilename("Imagee (*.raw)\0*.raw\0\0", hWnd);
             fileType = "raw";
             if(!image->loadRaw(current_file))
             {
