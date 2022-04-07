@@ -118,6 +118,7 @@ void Image::filterRed()
         pixels[i].g = 0;
     }
 }
+
 void Image::filterGreen()
 {
     for (int i = 0; i < w * h; ++i) {
@@ -125,6 +126,7 @@ void Image::filterGreen()
         pixels[i].b = 0;
     }
 }
+
 void Image::filterBlue()
 {
     for (int i = 0; i < w * h; ++i) {
@@ -132,6 +134,7 @@ void Image::filterBlue()
         pixels[i].g = 0;
     }
 }
+
 void Image::greyScale()
 {
     for (int i = 0; i < w * h; ++i) {
@@ -140,24 +143,58 @@ void Image::greyScale()
         pixels[i].b = (pixels[i].r + pixels[i].g + pixels[i].b) / 3;
     }
 }
+
 void Image::flipHorizontal()
 {
-
+    for (int i = 0; i < h; ++i) {
+        for(int j = 0; j < w/2; ++j) {
+            int temp = pixels[i * w + j].r;
+            pixels[i * w + j].r = pixels[i * w + w - j - 1].r;
+            pixels[i * w + w - j - 1].r = temp;
+            temp = pixels[i * w + j].g;
+            pixels[i * w + j].g = pixels[i * w + w - j - 1].g;
+            pixels[i * w + w - j - 1].g = temp;
+            temp = pixels[i * w + j].b;
+            pixels[i * w + j].b = pixels[i * w + w - j - 1].b;
+            pixels[i * w + w - j - 1].b = temp;
+        }
+    }
 }
 
 void Image::flipVertically()
 {
-
+    for(int j = 0; j < w; ++j) {
+        for(int i = 0; i < h/2; ++i) {
+            int temp = pixels[i * w + j].r;
+            pixels[i * w + j].r = pixels[(h - i - 1) * w + j].r;
+            pixels[(h - i - 1) * w + j].r = temp;
+            temp = pixels[i * w + j].g;
+            pixels[i * w + j].g = pixels[(h - i - 1) * w + j].g;
+            pixels[(h - i - 1) * w + j].g = temp;
+            temp = pixels[i * w + j].b;
+            pixels[i * w + j].b = pixels[(h - i - 1) * w + j].b;
+            pixels[(h - i - 1) * w + j].b = temp;
+        }
+    }
 }
+
 
 void Image::AdditionalFunction2()
 {
-
+    Image temp(h, w);
+    for(int a = 0; a < h; ++a) {
+        for(int b = 0; b < w; ++b) {
+            temp.pixels[(h - a - 1) * w + b] = pixels[a * w + b];
+        }
+    }
+    *this = temp;
 }
+
 void Image::AdditionalFunction3()
 {
 
 }
+
 void Image::AdditionalFunction1()
 {
     for (int i = 0; i < w * h; ++i) {
