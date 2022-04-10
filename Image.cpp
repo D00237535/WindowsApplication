@@ -178,7 +178,6 @@ void Image::flipVertically()
     }
 }
 
-
 void Image::AdditionalFunction1()
 {
     for (int i = 0; i < w * h; ++i) {
@@ -215,6 +214,7 @@ Image& Image::operator=(const Image &ref)
     }
     return *this;
 }
+
 void Image::AdditionalFunction3()
 {
     for (int i = 0; i < w * h; ++i)
@@ -256,6 +256,7 @@ void Image::AdditionalFunction3()
     }
 
 }
+
 void Image::AdditionalFunction4()
 {
     Image temp(h, w);
@@ -271,6 +272,15 @@ void Image::AdditionalFunction4()
     }
     *this = temp;
 }
+
+void Image::gammaCorrection() {
+    for (int i = 0; i < w * h; ++i) {
+        pixels[i].r = pow(pixels[i].r / 255.0, 1.0) * 255;
+        pixels[i].g = pow(pixels[i].g / 255.0, 1.0) * 255;
+        pixels[i].b = pow(pixels[i].b / 255.0, 1.0) * 255;
+    }
+}
+
 /* Functions used by the GUI - DO NOT MODIFY */
 int Image::getWidth()
 {
@@ -286,3 +296,12 @@ Rgb* Image::getImage()
 {
     return pixels;
 }
+
+
+
+int Image::pow(double d, float gamma) {
+    return 0;
+}
+
+
+

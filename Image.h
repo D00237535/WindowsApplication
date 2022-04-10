@@ -51,6 +51,7 @@ public:
     void AdditionalFunction2();
     void AdditionalFunction3();
     void AdditionalFunction4();
+    void GammaCorrection(float gamma);
     Image& operator=(const Image &ref);
     /*Functions used in the GUI - DO NOT MODIFY */
     Rgb* getImage();
@@ -58,6 +59,9 @@ public:
     int getHeight();
     ~Image() { if (pixels != nullptr) delete [] pixels; }
 
+    int pow(double d, float gamma);
+
+    void gammaCorrection();
 };
 
 
