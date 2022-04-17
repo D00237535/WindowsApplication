@@ -178,15 +178,37 @@ void Image::flipVertically()
     }
 }
 
-void Image::AdditionalFunction1()
-{
+void Image::AdditionalFunction1() {
     for (int i = 0; i < w * h; ++i) {
-        pixels[i].r = 255 - pixels[i].r;
-        pixels[i].g = 255 - pixels[i].g;
-        pixels[i].b = 255 - pixels[i].b;
+        if (rand() % 100 < 10) {
+            pixels[i].r = 0;
+            pixels[i].g = 0;
+            pixels[i].b = 0;
+        } else if (rand() % 100 < 10) {
+            pixels[i].r = 255;
+            pixels[i].g = 255;
+            pixels[i].b = 255;
+        }
     }
-}
+    for (int i = 0; i < h; ++i) {
+        for (int j = 0; j < w; ++j) {
+            int r = 0, g = 0, b = 0;
+            for (int k = -1; k <= 1; ++k) {
+                for (int l = -1; l <= 1; ++l) {
+                    if (i + k >= 0 && i + k < h && j + l >= 0 && j + l < w) {
+                        r += pixels[(i + k) * w + (j + l)].r;
+                        g += pixels[(i + k) * w + (j + l)].g;
+                        b += pixels[(i + k) * w + (j + l)].b;
+                    }
+                }
+            }
+            pixels[i * w + j].r = r / 9;
+            pixels[i * w + j].g = g / 9;
+            pixels[i * w + j].b = b / 9;
+        }
+    }
 
+}
 void Image::AdditionalFunction2()
 {
     Image temp(h, w);
@@ -215,47 +237,47 @@ Image& Image::operator=(const Image &ref)
     return *this;
 }
 
-void Image::AdditionalFunction3()
-{
-    for (int i = 0; i < w * h; ++i)
-    {
-        if (rand() % 100 < 10)
-        {
-            pixels[i].r = 0;
-            pixels[i].g = 0;
-            pixels[i].b = 0;
-        }
-        else if (rand() % 100 < 10)
-        {
-            pixels[i].r = 255;
-            pixels[i].g = 255;
-            pixels[i].b = 255;
-        }
-    }
-    for(int i = 0; i < h; ++i)
-    {
-        for(int j = 0; j < w; ++j)
-        {
-            int r = 0, g = 0, b = 0;
-            for(int k = -1; k <= 1; ++k)
-            {
-                for(int l = -1; l <= 1; ++l)
-                {
-                    if(i + k >= 0 && i + k < h && j + l >= 0 && j + l < w)
-                    {
-                        r += pixels[(i + k) * w + (j + l)].r;
-                        g += pixels[(i + k) * w + (j + l)].g;
-                        b += pixels[(i + k) * w + (j + l)].b;
-                    }
-                }
-            }
-            pixels[i * w + j].r = r / 9;
-            pixels[i * w + j].g = g / 9;
-            pixels[i * w + j].b = b / 9;
-        }
-    }
-
-}
+void Image::AdditionalFunction3(){}
+//{
+//    for (int i = 0; i < w * h; ++i)
+//    {
+//        if (rand() % 100 < 10)
+//        {
+//            pixels[i].r = 0;
+//            pixels[i].g = 0;
+//            pixels[i].b = 0;
+//        }
+//        else if (rand() % 100 < 10)
+//        {
+//            pixels[i].r = 255;
+//            pixels[i].g = 255;
+//            pixels[i].b = 255;
+//        }
+//    }
+//    for(int i = 0; i < h; ++i)
+//    {
+//        for(int j = 0; j < w; ++j)
+//        {
+//            int r = 0, g = 0, b = 0;
+//            for(int k = -1; k <= 1; ++k)
+//            {
+//                for(int l = -1; l <= 1; ++l)
+//                {
+//                    if(i + k >= 0 && i + k < h && j + l >= 0 && j + l < w)
+//                    {
+//                        r += pixels[(i + k) * w + (j + l)].r;
+//                        g += pixels[(i + k) * w + (j + l)].g;
+//                        b += pixels[(i + k) * w + (j + l)].b;
+//                    }
+//                }
+//            }
+//            pixels[i * w + j].r = r / 9;
+//            pixels[i * w + j].g = g / 9;
+//            pixels[i * w + j].b = b / 9;
+//        }
+//    }
+//
+//}
 
 void Image::AdditionalFunction4()
 {
