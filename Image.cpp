@@ -232,7 +232,7 @@ Image &Image::operator=(const Image &ref) {
 }
 
 void Image::AdditionalFunction3() {
-    //Add blur and oldtimey effect
+    //Add blur and oldtimy effect
     for (int i = 0; i < h; ++i) {
         for (int j = 0; j < w; ++j) {
             int r = 0, g = 0, b = 0;
