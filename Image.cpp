@@ -6,6 +6,7 @@
 #include <iomanip>
 #include <cstring>
 #include "Image.h"
+#include <cmath>
 
 
 bool Image::load(string filename) {
@@ -46,7 +47,7 @@ bool Image::load(string filename) {
 
 bool Image::loadRaw(string filename) {
     std::ifstream ifs;
-    ifs.open(filename, std::ios::binary);
+    ifs.open(filename);
     // need to spec. binary mode for Windows users
 
     try {
@@ -54,22 +55,20 @@ bool Image::loadRaw(string filename) {
             throw ("Can't open input file");
         }
         std::string header;
-        int w, h, b;
-        ifs >> header;
-        if (strcmp(header.c_str(), "P6") != 0) throw ("Can't read input file");
-        ifs >> w >> h >> b;
-        this->w = w;
-        this->h = h;
+       // int w, h;
+        ifs >> this->w >> this->h ;
+
         this->pixels = new Rgb[w * h]; // this is throw an exception if bad_alloc
-        ifs.ignore(256, '\n'); // skip empty lines in necessary until we get to the binary data
-        unsigned char pix[3]; // read each pixel one by one and convert bytes to floats
+      float r, g, b;
         for (int i = 0; i < w * h; ++i) {
-            ifs.read(reinterpret_cast<char *>(pix), 3);
-            this->pixels[i].r = pix[0];
-            this->pixels[i].g = pix[1];
-            this->pixels[i].b = pix[2];
+            ifs >> r >> g >> b;
+            this->pixels[i].r = (unsigned char)(r*255);
+            this->pixels[i].g = (unsigned char)(g*255);
+            this->pixels[i].b = (unsigned char)(b*255);
         }
         ifs.close();
+       // read each pixel one by one and convert bytes to floats
+
     }
     catch (const char *err) {
         fprintf(stderr, "%s\n", err);
@@ -183,24 +182,6 @@ void Image::AdditionalFunction1() {
             pixels[i].b = 255;
         }
     }
-
-    for (int i = 0; i < h; ++i) {
-        for (int j = 0; j < w; ++j) {
-            int r = 0, g = 0, b = 0;
-            for (int k = -1; k <= 1; ++k) {
-                for (int l = -1; l <= 1; ++l) {
-                    if (i + k >= 0 && i + k < h && j + l >= 0 && j + l < w) {
-                        r += pixels[(i + k) * w + (j + l)].r;
-                        g += pixels[(i + k) * w + (j + l)].g;
-                        b += pixels[(i + k) * w + (j + l)].b;
-                    }
-                }
-            }
-            pixels[i * w + j].r = r / 9;
-            pixels[i * w + j].g = g / 9;
-            pixels[i * w + j].b = b / 9;
-        }
-    }
 }
 
 void Image::AdditionalFunction2() {
@@ -232,7 +213,7 @@ Image &Image::operator=(const Image &ref) {
 }
 
 void Image::AdditionalFunction3() {
-    //Add blur and oldtimy effect
+    //Add blur and brown filter
     for (int i = 0; i < h; ++i) {
         for (int j = 0; j < w; ++j) {
             int r = 0, g = 0, b = 0;
@@ -277,20 +258,32 @@ void Image::AdditionalFunction3() {
     }
 }
 
-void Image::AdditionalFunction4() {
-    Image temp(h, w);
+void Image::AdditionalFunction4()
+{
+    int pixels[3];
+    int adjusment=700;
+    unsigned int size = w * h;
+    for(int c = 0 ; c < size; c++)
+    {
+        pixels[0] = this->pixels[c].r;
+        pixels[1] = this->pixels[c].g;
+        pixels[2] = this->pixels[c].b;
 
-    for (int r = 0; r < h; ++r) {
-        for (int c = 0; c < w; ++c) {
-            unsigned int dest = (c * 2 * h * 2) + (h * 2 - r * 2 - 1 * 2);
-
-
-            temp.pixels[dest] = pixels[(r * 2 * w * 2) + c * 2];
-
-        }
+        this -> pixels[c].r = (acos(((pixels[0] / 255.0f) * 255.0) / adjusment) * adjusment);
+        this -> pixels[c].g = (acos(((pixels[1] / 255.0f) * 255.0) / adjusment) * adjusment);
+        this -> pixels[c].b = (acos(((pixels[2] / 255.0f) * 255.0) / adjusment) * adjusment);
     }
-    *this = temp;
 }
+void Image::gammaCorrection()
+{
+    for (int i = 0; i < w * h; ++i) {
+        float gamma=1/2.2f;
+        pixels[i].r = pow(pixels[i].r / 255.0f, gamma) * 255;
+        pixels[i].g = pow(pixels[i].g / 255.0f, gamma) * 255;
+        pixels[i].b = pow(pixels[i].b / 255.0f, gamma) * 255;
+    }
+}
+
 
 /* Functions used by the GUI - DO NOT MODIFY */
 int Image::getWidth() {
@@ -304,3 +297,4 @@ int Image::getHeight() {
 Rgb *Image::getImage() {
     return pixels;
 }
+

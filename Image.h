@@ -11,6 +11,7 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <math.h>
 using namespace std;
 struct Rgb
 {
@@ -51,17 +52,13 @@ public:
     void AdditionalFunction2();
     void AdditionalFunction3();
     void AdditionalFunction4();
-    void GammaCorrection(float gamma);
+    void gammaCorrection();  // gamma correction
     Image& operator=(const Image &ref);
     /*Functions used in the GUI - DO NOT MODIFY */
     Rgb* getImage();
     int getWidth();
     int getHeight();
     ~Image() { if (pixels != nullptr) delete [] pixels; }
-
-    int pow(double d, float gamma);
-
-    void gammaCorrection();
 };
 
 
